@@ -41,6 +41,23 @@ export class ProductsService {
         }
     }
 
+    async getBrandAndSubCategory(category: string): Promise<{success: boolean, message: string, data?: any }>{
+        try {
+            const products = await this.productModel.find({category: category})
+            const uniqueSubCategory = new Set(products.map(product => product.sub_category));
+
+            const uniqueBrands = new Set(products.map(product => product.brand));
+
+            const data = {
+                brands: [...uniqueBrands],
+                sub_categories: [...uniqueSubCategory]
+            }
+            return {success: true, message: 'Get Brands and sub categories', data}
+        } catch (error) {
+            return {success: false, message: "Can't get brands and sub categories"}
+        }
+    }
+
     async getProductById(id: string) : Promise<{success: boolean, message: string, product?: ProductEntity}>{
         try {
             const product = await this.productModel.findById(id)

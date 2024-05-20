@@ -33,6 +33,18 @@ export class ProductsController {
             }
         }
 
+    @Get('brands')
+    async getBrand(
+        @Query('category') category: string,
+    ) : Promise<{success: boolean, message: string, data?: { brands: string[], subCategories: string[] }}> {
+        try {
+            const data = await this.productsService.getBrandAndSubCategory(category)
+            return data
+        } catch (error) {
+            return {success: false, message: error.message}
+        }
+    }
+
     @Get('filter/:id')
     async getProductById(
         @Param('id') id: string
