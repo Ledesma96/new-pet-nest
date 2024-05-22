@@ -96,4 +96,13 @@ export class ProductsService {
             return {success: false, message: error.message}
         }
     }
+
+    async searchProduct(prefix: string): Promise<{success: boolean, message: string, products?: ProductEntity[]}>{
+        try {
+            const products = await this.productModel.find({name: {$regex: `^${prefix}`, $options: 'i'}})
+            return {success: true, message: 'Get Product', products: products}
+        } catch (error) {
+            return {success: false, message: error.message}
+        }
+    }
 }

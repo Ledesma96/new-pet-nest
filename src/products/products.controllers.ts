@@ -61,6 +61,21 @@ export class ProductsController {
         }
     }
 
+    @Get('search')
+    async searchProduct(
+        @Query('search') prefix: string
+    ) : Promise<{success: boolean, message: string, products?: ProductEntity[]}> {
+        try {
+            if(prefix != ''){
+                const products = await this.productsService.searchProduct(prefix)
+                return products
+            }
+            return 
+        } catch (error) {
+            return {success: false, message: error.message}
+        }
+    }
+
     @UseInterceptors(
         FilesInterceptor(
             'file' , undefined, 
